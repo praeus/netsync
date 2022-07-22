@@ -1,0 +1,2 @@
+# netsync
+NetSync GDevelop Extension
