@@ -1,5 +1,5 @@
 {
-  "firstLayout": "",
+  "firstLayout": "Connect",
   "gdVersion": {
     "build": 99,
     "major": 4,
@@ -379,7 +379,7 @@
         "gridColor": 10401023,
         "gridAlpha": 0.8,
         "snap": true,
-        "zoomFactor": 0.4801999999999996,
+        "zoomFactor": 1.2116,
         "windowMask": false
       },
       "objectsGroups": [],
@@ -452,6 +452,18 @@
           "name": "SideBCount",
           "type": "number",
           "value": 0
+        },
+        {
+          "folded": true,
+          "name": "LoginString",
+          "type": "string",
+          "value": ""
+        },
+        {
+          "folded": true,
+          "name": "GameScene",
+          "type": "string",
+          "value": ""
         }
       ],
       "instances": [
@@ -615,11 +627,11 @@
           "height": 59,
           "layer": "",
           "locked": false,
-          "name": "LoginButton",
+          "name": "Button",
           "persistentUuid": "9675cebb-e9f7-48ac-bf55-5f4579863ef1",
-          "width": 110,
-          "x": 595,
-          "y": 436,
+          "width": 170,
+          "x": 585,
+          "y": 435,
           "zOrder": 8,
           "numberProperties": [],
           "stringProperties": [],
@@ -644,7 +656,7 @@
               "folded": true,
               "name": "Text",
               "type": "string",
-              "value": "Connect"
+              "value": "Variable Sync"
             }
           ]
         },
@@ -886,7 +898,7 @@
         },
         {
           "assetStoreId": "93d354c50dc171a924416001151d2c526e72b8012a1d910db4b036e8cbfdd851",
-          "name": "LoginButton",
+          "name": "Button",
           "tags": "",
           "type": "Sprite",
           "updateIfNotVisible": false,
@@ -1038,6 +1050,27 @@
             "g": 0,
             "r": 0
           }
+        },
+        {
+          "assetStoreId": "",
+          "bold": false,
+          "italic": false,
+          "name": "SceneLabel",
+          "smoothed": true,
+          "tags": "",
+          "type": "TextObject::Text",
+          "underlined": false,
+          "variables": [],
+          "effects": [],
+          "behaviors": [],
+          "string": "Scene",
+          "font": "",
+          "characterSize": 20,
+          "color": {
+            "b": 0,
+            "g": 0,
+            "r": 0
+          }
         }
       ],
       "events": [
@@ -1088,6 +1121,16 @@
                   "parameters": [
                     "VariableString(LoginString)",
                     "Login"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "ModVarSceneTxt"
+                  },
+                  "parameters": [
+                    "LoginString",
+                    "=",
+                    "\"\""
                   ]
                 }
               ]
@@ -1330,7 +1373,19 @@
                 "value": "SourisSurObjet"
               },
               "parameters": [
-                "LoginButton",
+                "Button",
+                "",
+                "",
+                ""
+              ]
+            },
+            {
+              "type": {
+                "value": "CollisionNP"
+              },
+              "parameters": [
+                "Button",
+                "Label",
                 "",
                 "",
                 ""
@@ -1345,6 +1400,16 @@
               "parameters": [
                 "IsConnecting",
                 "True"
+              ]
+            },
+            {
+              "type": {
+                "value": "ModVarSceneTxt"
+              },
+              "parameters": [
+                "GameScene",
+                "=",
+                "Label.String()"
               ]
             }
           ],
@@ -1486,6 +1551,14 @@
                         "\"Login\"",
                         "ToJSON(Login)"
                       ]
+                    },
+                    {
+                      "type": {
+                        "value": "VariableClearChildren"
+                      },
+                      "parameters": [
+                        "Login"
+                      ]
                     }
                   ]
                 }
@@ -1608,6 +1681,7 @@
                       },
                       "parameters": [
                         "",
+                        "\"GameName=NetSync Demo,Scene=\" + VariableString(GameScene)",
                         ""
                       ]
                     }
@@ -1627,27 +1701,59 @@
                       ]
                     }
                   ],
-                  "actions": [
+                  "actions": [],
+                  "events": [
                     {
-                      "type": {
-                        "value": "NetSync::SetFieldValue"
-                      },
-                      "parameters": [
-                        "",
-                        "\"Scene\"",
-                        "\"Variable Sync\"",
-                        "\"Game\"",
-                        ""
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "BuiltinCommonInstructions::Once"
+                          },
+                          "parameters": []
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "NetSync::SetFieldValue"
+                          },
+                          "parameters": [
+                            "",
+                            "\"Scene\"",
+                            "VariableString(GameScene)",
+                            "\"Game\"",
+                            ""
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "NetSync::SetFieldValue"
+                          },
+                          "parameters": [
+                            "",
+                            "\"GameName\"",
+                            "\"NetSync Demo\"",
+                            "\"Game\"",
+                            ""
+                          ]
+                        }
                       ]
                     },
                     {
-                      "type": {
-                        "value": "NetSync::Assign"
-                      },
-                      "parameters": [
-                        "",
-                        "2",
-                        ""
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "NetSync::Assign"
+                          },
+                          "parameters": [
+                            "",
+                            "2",
+                            ""
+                          ]
+                        }
                       ]
                     }
                   ]
@@ -1678,7 +1784,32 @@
                           "parameters": []
                         }
                       ],
-                      "actions": [],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "NetSync::SetFieldValue"
+                          },
+                          "parameters": [
+                            "",
+                            "\"Scene\"",
+                            "VariableString(GameScene)",
+                            "\"GamePlayer\"",
+                            ""
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "NetSync::SetFieldValue"
+                          },
+                          "parameters": [
+                            "",
+                            "\"GameName\"",
+                            "\"NetSync Demo\"",
+                            "\"GamePlayer\"",
+                            ""
+                          ]
+                        }
+                      ],
                       "events": [
                         {
                           "type": "BuiltinCommonInstructions::Standard",
@@ -1688,8 +1819,8 @@
                                 "value": "BuiltinCommonInstructions::CompareStrings"
                               },
                               "parameters": [
-                                "NetSync::FieldValue(\"Nickname\", \"Player\")",
-                                "=",
+                                "Nickname.Text()",
+                                "!=",
                                 "\"\""
                               ]
                             }
@@ -1717,13 +1848,43 @@
                                 "value": "BuiltinCommonInstructions::CompareStrings"
                               },
                               "parameters": [
-                                "NetSync::FieldValue(\"Side\", \"GamePlayer\")",
+                                "NetSync::FieldValue(\"Nickname\", \"Player\")",
+                                "!=",
+                                "\"\""
+                              ]
+                            },
+                            {
+                              "type": {
+                                "value": "BuiltinCommonInstructions::CompareStrings"
+                              },
+                              "parameters": [
+                                "Nickname.Text()",
                                 "=",
                                 "\"\""
                               ]
                             }
                           ],
-                          "actions": [],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "TextInput::TextInputObject::SetText"
+                              },
+                              "parameters": [
+                                "Nickname",
+                                "=",
+                                "NetSync::FieldValue(\"Nickname\", \"Player\")"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "colorB": 228,
+                          "colorG": 176,
+                          "colorR": 74,
+                          "creationTime": 0,
+                          "name": "Choose a side",
+                          "source": "",
+                          "type": "BuiltinCommonInstructions::Group",
                           "events": [
                             {
                               "type": "BuiltinCommonInstructions::Standard",
@@ -1767,48 +1928,66 @@
                                         "value": "BuiltinCommonInstructions::CompareStrings"
                                       },
                                       "parameters": [
-                                        "NetSync::RecordFieldValue(\"Side\", Variable(PlayerIndex), \"GamePlayers\")",
-                                        "=",
-                                        "\"A\""
+                                        "NetSync::RecordFieldValue(\"Id\", Variable(PlayerIndex), \"GamePlayers\")",
+                                        "!=",
+                                        "Firebase::GetUserUID()"
                                       ]
                                     }
                                   ],
-                                  "actions": [
+                                  "actions": [],
+                                  "events": [
                                     {
-                                      "type": {
-                                        "value": "ModVarScene"
-                                      },
-                                      "parameters": [
-                                        "SideACount",
-                                        "+",
-                                        "1"
+                                      "type": "BuiltinCommonInstructions::Standard",
+                                      "conditions": [
+                                        {
+                                          "type": {
+                                            "value": "BuiltinCommonInstructions::CompareStrings"
+                                          },
+                                          "parameters": [
+                                            "NetSync::RecordFieldValue(\"Side\", Variable(PlayerIndex), \"GamePlayers\")",
+                                            "=",
+                                            "\"A\""
+                                          ]
+                                        }
+                                      ],
+                                      "actions": [
+                                        {
+                                          "type": {
+                                            "value": "ModVarScene"
+                                          },
+                                          "parameters": [
+                                            "SideACount",
+                                            "+",
+                                            "1"
+                                          ]
+                                        }
                                       ]
-                                    }
-                                  ]
-                                },
-                                {
-                                  "type": "BuiltinCommonInstructions::Standard",
-                                  "conditions": [
+                                    },
                                     {
-                                      "type": {
-                                        "value": "BuiltinCommonInstructions::CompareStrings"
-                                      },
-                                      "parameters": [
-                                        "NetSync::RecordFieldValue(\"Side\", Variable(PlayerIndex), \"GamePlayers\")",
-                                        "=",
-                                        "\"B\""
-                                      ]
-                                    }
-                                  ],
-                                  "actions": [
-                                    {
-                                      "type": {
-                                        "value": "ModVarScene"
-                                      },
-                                      "parameters": [
-                                        "SideBCount",
-                                        "+",
-                                        "1"
+                                      "type": "BuiltinCommonInstructions::Standard",
+                                      "conditions": [
+                                        {
+                                          "type": {
+                                            "value": "BuiltinCommonInstructions::CompareStrings"
+                                          },
+                                          "parameters": [
+                                            "NetSync::RecordFieldValue(\"Side\", Variable(PlayerIndex), \"GamePlayers\")",
+                                            "=",
+                                            "\"B\""
+                                          ]
+                                        }
+                                      ],
+                                      "actions": [
+                                        {
+                                          "type": {
+                                            "value": "ModVarScene"
+                                          },
+                                          "parameters": [
+                                            "SideBCount",
+                                            "+",
+                                            "1"
+                                          ]
+                                        }
                                       ]
                                     }
                                   ]
@@ -1889,7 +2068,8 @@
                                 }
                               ]
                             }
-                          ]
+                          ],
+                          "parameters": []
                         }
                       ]
                     },
@@ -1924,7 +2104,18 @@
                       ]
                     }
                   ],
-                  "actions": []
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "Scene"
+                      },
+                      "parameters": [
+                        "",
+                        "NetSync::FieldValue(\"Scene\", \"Game\")",
+                        ""
+                      ]
+                    }
+                  ]
                 }
               ],
               "parameters": []
@@ -2154,8 +2345,8 @@
           "name": "WaitingText",
           "persistentUuid": "5934a7a7-d8da-4f44-89ba-8a760a3f6342",
           "width": 0,
-          "x": 278,
-          "y": 150,
+          "x": 269,
+          "y": 170,
           "zOrder": 7,
           "numberProperties": [],
           "stringProperties": [],
@@ -2554,6 +2745,29 @@
         }
       ],
       "events": [
+        {
+          "type": "BuiltinCommonInstructions::Standard",
+          "conditions": [
+            {
+              "type": {
+                "value": "DepartScene"
+              },
+              "parameters": [
+                ""
+              ]
+            }
+          ],
+          "actions": [
+            {
+              "type": {
+                "value": "Cache"
+              },
+              "parameters": [
+                "WizardMale"
+              ]
+            }
+          ]
+        },
         {
           "type": "BuiltinCommonInstructions::Standard",
           "conditions": [],
@@ -3206,20 +3420,70 @@
                           ]
                         }
                       ],
-                      "actions": [
+                      "actions": [],
+                      "events": [
                         {
-                          "type": {
-                            "value": "FireBullet::FireBullet::Fire"
-                          },
-                          "parameters": [
-                            "WizardMale",
-                            "FireBullet",
-                            "WizardMale.CenterX() + 5",
-                            "WizardMale.CenterY()",
-                            "FireProjectile",
-                            "0",
-                            "500",
-                            ""
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "value": "BuiltinCommonInstructions::CompareStrings"
+                              },
+                              "parameters": [
+                                "WizardMale.Syncing::FieldValue(\"Side\")",
+                                "=",
+                                "\"A\""
+                              ]
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "FireBullet::FireBullet::Fire"
+                              },
+                              "parameters": [
+                                "WizardMale",
+                                "FireBullet",
+                                "WizardMale.CenterX() + 10",
+                                "WizardMale.CenterY()",
+                                "FireProjectile",
+                                "0",
+                                "500",
+                                ""
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "value": "BuiltinCommonInstructions::CompareStrings"
+                              },
+                              "parameters": [
+                                "WizardMale.Syncing::FieldValue(\"Side\")",
+                                "=",
+                                "\"B\""
+                              ]
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "FireBullet::FireBullet::Fire"
+                              },
+                              "parameters": [
+                                "WizardMale",
+                                "FireBullet",
+                                "WizardMale.CenterX() - 10",
+                                "WizardMale.CenterY()",
+                                "FireProjectile",
+                                "180",
+                                "500",
+                                ""
+                              ]
+                            }
                           ]
                         }
                       ]
@@ -3265,18 +3529,6 @@
                       "conditions": [
                         {
                           "type": {
-                            "inverted": true,
-                            "value": "LinkedObjects::PickObjectsLinkedTo"
-                          },
-                          "parameters": [
-                            "",
-                            "WizardMale",
-                            "SpawnPoint",
-                            ""
-                          ]
-                        },
-                        {
-                          "type": {
                             "value": "VarObjetTxt"
                           },
                           "parameters": [
@@ -3312,12 +3564,39 @@
                         },
                         {
                           "type": {
-                            "value": "LinkedObjects::LinkObjects"
+                            "value": "Montre"
                           },
                           "parameters": [
-                            "",
-                            "SpawnPoint",
-                            "WizardMale"
+                            "WizardMale",
+                            ""
+                          ]
+                        }
+                      ],
+                      "events": [
+                        {
+                          "type": "BuiltinCommonInstructions::Standard",
+                          "conditions": [
+                            {
+                              "type": {
+                                "value": "BuiltinCommonInstructions::CompareStrings"
+                              },
+                              "parameters": [
+                                "WizardMale.Syncing::FieldValue(\"Side\")",
+                                "=",
+                                "\"B\""
+                              ]
+                            }
+                          ],
+                          "actions": [
+                            {
+                              "type": {
+                                "value": "FlipX"
+                              },
+                              "parameters": [
+                                "WizardMale",
+                                "yes"
+                              ]
+                            }
                           ]
                         }
                       ]
@@ -3390,39 +3669,30 @@
           "conditions": [
             {
               "type": {
-                "value": "NetSync::HasStatus"
+                "value": "BuiltinCommonInstructions::Or"
               },
-              "parameters": [
-                "",
-                "\"NewGame\"",
-                ""
-              ]
-            }
-          ],
-          "actions": [
-            {
-              "type": {
-                "value": "Scene"
-              },
-              "parameters": [
-                "",
-                "\"Connect\"",
-                ""
-              ]
-            }
-          ]
-        },
-        {
-          "type": "BuiltinCommonInstructions::Standard",
-          "conditions": [
-            {
-              "type": {
-                "value": "NetSync::HasStatus"
-              },
-              "parameters": [
-                "",
-                "\"RemovedFromGame\"",
-                ""
+              "parameters": [],
+              "subInstructions": [
+                {
+                  "type": {
+                    "value": "NetSync::HasStatus"
+                  },
+                  "parameters": [
+                    "",
+                    "\"NewGame\"",
+                    ""
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "NetSync::HasStatus"
+                  },
+                  "parameters": [
+                    "",
+                    "\"RemovedFromGame\"",
+                    ""
+                  ]
+                }
               ]
             }
           ],
@@ -3651,6 +3921,18 @@
         {
           "folded": true,
           "name": "IsMessageSent",
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "folded": true,
+          "name": "IsPlayerUpdated",
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "folded": true,
+          "name": "IsGameUpdated",
           "type": "boolean",
           "value": false
         }
@@ -5574,11 +5856,112 @@
                       ]
                     }
                   ],
-                  "actions": [],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "SetSceneVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "IsPlayerUpdated",
+                        "True"
+                      ]
+                    }
+                  ],
                   "events": [
                     {
                       "type": "BuiltinCommonInstructions::Standard",
                       "conditions": [
+                        {
+                          "type": {
+                            "value": "SceneVariableAsBoolean"
+                          },
+                          "parameters": [
+                            "IsPlayerUpdated",
+                            "True"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "SceneVariableAsBoolean"
+                          },
+                          "parameters": [
+                            "IsGameUpdated",
+                            "True"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "VarObjetTxt"
+                          },
+                          "parameters": [
+                            "Tick",
+                            "TestName",
+                            "=",
+                            "\"Updated\""
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "SetAnimationName"
+                          },
+                          "parameters": [
+                            "Tick",
+                            "\"Green\""
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "NetSync::HasStatus"
+                      },
+                      "parameters": [
+                        "",
+                        "\"GameUpdated\"",
+                        ""
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "SetSceneVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "IsGameUpdated",
+                        "True"
+                      ]
+                    }
+                  ],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Standard",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "SceneVariableAsBoolean"
+                          },
+                          "parameters": [
+                            "IsPlayerUpdated",
+                            "True"
+                          ]
+                        },
+                        {
+                          "type": {
+                            "value": "SceneVariableAsBoolean"
+                          },
+                          "parameters": [
+                            "IsGameUpdated",
+                            "True"
+                          ]
+                        },
                         {
                           "type": {
                             "value": "VarObjetTxt"
@@ -17801,12 +18184,6 @@
               "conditions": [
                 {
                   "type": {
-                    "value": "Firebase::IsSignedIn"
-                  },
-                  "parameters": []
-                },
-                {
-                  "type": {
                     "inverted": true,
                     "value": "MQTT::isConnected"
                   },
@@ -17979,7 +18356,7 @@
               "events": [
                 {
                   "type": "BuiltinCommonInstructions::JsCode",
-                  "inlineCode": "const fields = eventsFunctionContext.getArgument(\"Fields\");\nconst fieldValues = runtimeScene\n    .getVariables()\n    .get(\"__NetSync\")\n    .getChild(\"FieldValues\");\nif ((fields != null) && (fields != \"\")) {\n    const fieldArray = fields.split(\",\");\n    for (const field of fieldArray) {\n        const nameValue = field.split(\"=\");\n        if (nameValue.length == 2) {\n            const scopeValue = nameValue[0].split(\".\");\n            if (scopeValue.length = 2) {\n                fieldValues\n                    .getChild(scopeValue[0])\n                    .getChild(scopeValue[1])\n                    .setString(nameValue[1]);\n            }\n        }\n    }\n    \n}",
+                  "inlineCode": "const fields = eventsFunctionContext.getArgument(\"Fields\");\nconst fieldValues = runtimeScene\n    .getVariables()\n    .get(\"__NetSync\")\n    .getChild(\"FieldValues\");\nif ((fields != null) && (fields != \"\")) {\n    const fieldArray = fields.split(\",\");\n    for (let field of fieldArray) {\n        const nameValue = field.split(\"=\");\n        if (nameValue.length == 2) {\n            const scopeValue = nameValue[0].split(\".\");\n            if (scopeValue.length = 2) {\n                fieldValues\n                    .getChild(scopeValue[0])\n                    .getChild(scopeValue[1])\n                    .setString(nameValue[1]);\n            }\n        }\n    }\n    \n}",
                   "parameterObjects": "",
                   "useStrict": true,
                   "eventsSheetExpanded": false
@@ -18387,7 +18764,7 @@
                       "events": [
                         {
                           "type": "BuiltinCommonInstructions::JsCode",
-                          "inlineCode": "const filters = eventsFunctionContext.getArgument(\"Filters\");\nconst filterValues = runtimeScene\n    .getVariables()\n    .get(\"__NetSync\")\n    .getChild(\"Filters\");\nif ((filters != null) && (filters != \"\")) {\n    const filterArray = filters.split(\",\");\n    for (const filter of filterArray) {\n        const nameValue = filter.split(\".\");\n        if (nameValue.length == 2) {\n            filterValues.getChild(nameValue[0]).setString(nameValue[1]);\n        }\n    }\n}",
+                          "inlineCode": "const filters = eventsFunctionContext.getArgument(\"Filters\");\nconst filterValues = runtimeScene\n    .getVariables()\n    .get(\"__NetSync\")\n    .getChild(\"Filters\");\n    \nif ((filters != null) && (filters != \"\")) {\n    const filterArray = filters.split(\",\");\n    for (let filter of filterArray) {\n        const nameValue = filter.split(\"=\");\n        if (nameValue.length == 2) {\n            filterValues.getChild(nameValue[0]).setString(nameValue[1]);\n        }\n    }\n}",
                           "parameterObjects": "",
                           "useStrict": true,
                           "eventsSheetExpanded": false
@@ -18553,6 +18930,14 @@
                             "",
                             ""
                           ]
+                        },
+                        {
+                          "type": {
+                            "value": "VariableClearChildren"
+                          },
+                          "parameters": [
+                            "__NetSync.Games"
+                          ]
                         }
                       ],
                       "events": [
@@ -18638,6 +19023,301 @@
                                   ],
                                   "events": [
                                     {
+                                      "colorB": 228,
+                                      "colorG": 176,
+                                      "colorR": 74,
+                                      "creationTime": 0,
+                                      "name": "Update games list and player count",
+                                      "source": "",
+                                      "type": "BuiltinCommonInstructions::Group",
+                                      "events": [
+                                        {
+                                          "type": "BuiltinCommonInstructions::Comment",
+                                          "color": {
+                                            "b": 109,
+                                            "g": 230,
+                                            "r": 255,
+                                            "textB": 0,
+                                            "textG": 0,
+                                            "textR": 0
+                                          },
+                                          "comment": "Loop through the games list to see if this game is already there",
+                                          "comment2": ""
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Standard",
+                                          "conditions": [],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "SetSceneVariableAsBoolean"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.GameFound",
+                                                "False"
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::ForEachChildVariable",
+                                          "iterableVariableName": "__NetSync.Games",
+                                          "valueIteratorVariableName": "__NetSync.Game",
+                                          "keyIteratorVariableName": "__NetSync.Index",
+                                          "conditions": [
+                                            {
+                                              "type": {
+                                                "value": "VarSceneTxt"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Game.Id",
+                                                "=",
+                                                "VariableString(__NetSync.GamePlayer.GameId)"
+                                              ]
+                                            }
+                                          ],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "SetSceneVariableAsBoolean"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.GameFound",
+                                                "True"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "ModVarScene"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.GameIndex",
+                                                "=",
+                                                "Variable(__NetSync.Index)"
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Standard",
+                                          "conditions": [],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "VariableRemoveChild"
+                                              },
+                                              "parameters": [
+                                                "__NetSync",
+                                                "\"Game\""
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Comment",
+                                          "color": {
+                                            "b": 109,
+                                            "g": 230,
+                                            "r": 255,
+                                            "textB": 0,
+                                            "textG": 0,
+                                            "textR": 0
+                                          },
+                                          "comment": "If it is already there, update the player count",
+                                          "comment2": ""
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Standard",
+                                          "conditions": [
+                                            {
+                                              "type": {
+                                                "value": "SceneVariableAsBoolean"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.GameFound",
+                                                "True"
+                                              ]
+                                            }
+                                          ],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "ModVarScene"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Games[Variable(__NetSync.GameIndex)].PlayerCount",
+                                                "+",
+                                                "1"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "ModVarGlobal"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Games[Variable(__NetSync.GameIndex)].PlayerCount",
+                                                "+",
+                                                "1"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "NetSync::LogMessage"
+                                              },
+                                              "parameters": [
+                                                "",
+                                                "\"Updating game with id \" + VariableString(__NetSync.Games[Variable(__NetSync.GameIndex)].Id) + \" to a player count of \" + VariableString(__NetSync.Games[Variable(__NetSync.GameIndex)].PlayerCount) + \".\"",
+                                                "",
+                                                ""
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Comment",
+                                          "color": {
+                                            "b": 109,
+                                            "g": 230,
+                                            "r": 255,
+                                            "textB": 0,
+                                            "textG": 0,
+                                            "textR": 0
+                                          },
+                                          "comment": "If it is not already there, add it to the games list",
+                                          "comment2": ""
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Standard",
+                                          "conditions": [
+                                            {
+                                              "type": {
+                                                "value": "SceneVariableAsBoolean"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.GameFound",
+                                                "False"
+                                              ]
+                                            }
+                                          ],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "ModVarSceneTxt"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Game.Id",
+                                                "=",
+                                                "VariableString(__NetSync.GamePlayer.GameId)"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "ModVarScene"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Game.PlayerCount",
+                                                "=",
+                                                "1"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "SceneVariablePush"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Games",
+                                                "__NetSync.Game"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "GlobalVariablePush"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Games",
+                                                "__NetSync.Game"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "ModVarScene"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.GameIndex",
+                                                "=",
+                                                "VariableChildCount(__NetSync.Games) - 1"
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "NetSync::LogMessage"
+                                              },
+                                              "parameters": [
+                                                "",
+                                                "\"Adding game with id \" + VariableString(__NetSync.GamePlayer.GameId) + \" to games list.\"",
+                                                "",
+                                                ""
+                                              ]
+                                            },
+                                            {
+                                              "type": {
+                                                "value": "VariableRemoveChild"
+                                              },
+                                              "parameters": [
+                                                "__NetSync",
+                                                "\"Game\""
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Standard",
+                                          "conditions": [],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "VariableRemoveChild"
+                                              },
+                                              "parameters": [
+                                                "__NetSync",
+                                                "\"GameFound\""
+                                              ]
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Comment",
+                                          "color": {
+                                            "b": 109,
+                                            "g": 230,
+                                            "r": 255,
+                                            "textB": 0,
+                                            "textG": 0,
+                                            "textR": 0
+                                          },
+                                          "comment": "Add each game player to an array under the game",
+                                          "comment2": ""
+                                        },
+                                        {
+                                          "type": "BuiltinCommonInstructions::Standard",
+                                          "conditions": [],
+                                          "actions": [
+                                            {
+                                              "type": {
+                                                "value": "SceneVariablePush"
+                                              },
+                                              "parameters": [
+                                                "__NetSync.Games[Variable(__NetSync.GameIndex)].Players",
+                                                "__NetSync.GamePlayer"
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "parameters": []
+                                    },
+                                    {
+                                      "disabled": true,
                                       "type": "BuiltinCommonInstructions::Standard",
                                       "conditions": [
                                         {
@@ -18651,305 +19331,10 @@
                                           ]
                                         }
                                       ],
-                                      "actions": [],
-                                      "events": [
-                                        {
-                                          "colorB": 228,
-                                          "colorG": 176,
-                                          "colorR": 74,
-                                          "creationTime": 0,
-                                          "name": "Update games list and player count",
-                                          "source": "",
-                                          "type": "BuiltinCommonInstructions::Group",
-                                          "events": [
-                                            {
-                                              "type": "BuiltinCommonInstructions::Comment",
-                                              "color": {
-                                                "b": 109,
-                                                "g": 230,
-                                                "r": 255,
-                                                "textB": 0,
-                                                "textG": 0,
-                                                "textR": 0
-                                              },
-                                              "comment": "Loop through the games list to see if this game is already there",
-                                              "comment2": ""
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Standard",
-                                              "conditions": [],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "SetSceneVariableAsBoolean"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.GameFound",
-                                                    "False"
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::ForEachChildVariable",
-                                              "iterableVariableName": "__NetSync.Games",
-                                              "valueIteratorVariableName": "__NetSync.Game",
-                                              "keyIteratorVariableName": "__NetSync.Index",
-                                              "conditions": [
-                                                {
-                                                  "type": {
-                                                    "value": "VarSceneTxt"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Game.Id",
-                                                    "=",
-                                                    "VariableString(__NetSync.GamePlayer.GameId)"
-                                                  ]
-                                                }
-                                              ],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "SetSceneVariableAsBoolean"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.GameFound",
-                                                    "True"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "ModVarScene"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.GameIndex",
-                                                    "=",
-                                                    "Variable(__NetSync.Index)"
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Standard",
-                                              "conditions": [],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "VariableRemoveChild"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync",
-                                                    "\"Game\""
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Comment",
-                                              "color": {
-                                                "b": 109,
-                                                "g": 230,
-                                                "r": 255,
-                                                "textB": 0,
-                                                "textG": 0,
-                                                "textR": 0
-                                              },
-                                              "comment": "If it is already there, update the player count",
-                                              "comment2": ""
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Standard",
-                                              "conditions": [
-                                                {
-                                                  "type": {
-                                                    "value": "SceneVariableAsBoolean"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.GameFound",
-                                                    "True"
-                                                  ]
-                                                }
-                                              ],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "ModVarScene"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Games[Variable(__NetSync.GameIndex)].PlayerCount",
-                                                    "+",
-                                                    "1"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "ModVarGlobal"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Games[Variable(__NetSync.GameIndex)].PlayerCount",
-                                                    "+",
-                                                    "1"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "NetSync::LogMessage"
-                                                  },
-                                                  "parameters": [
-                                                    "",
-                                                    "\"Updating game with id \" + VariableString(__NetSync.Games[Variable(__NetSync.GameIndex)].Id) + \" to a player count of \" + VariableString(__NetSync.Games[Variable(__NetSync.GameIndex)].PlayerCount) + \".\"",
-                                                    "",
-                                                    ""
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Comment",
-                                              "color": {
-                                                "b": 109,
-                                                "g": 230,
-                                                "r": 255,
-                                                "textB": 0,
-                                                "textG": 0,
-                                                "textR": 0
-                                              },
-                                              "comment": "If it is not already there, add it to the games list",
-                                              "comment2": ""
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Standard",
-                                              "conditions": [
-                                                {
-                                                  "type": {
-                                                    "value": "SceneVariableAsBoolean"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.GameFound",
-                                                    "False"
-                                                  ]
-                                                }
-                                              ],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "ModVarSceneTxt"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Game.Id",
-                                                    "=",
-                                                    "VariableString(__NetSync.GamePlayer.GameId)"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "ModVarScene"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Game.PlayerCount",
-                                                    "=",
-                                                    "1"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "SceneVariablePush"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Games",
-                                                    "__NetSync.Game"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "GlobalVariablePush"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Games",
-                                                    "__NetSync.Game"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "ModVarScene"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.GameIndex",
-                                                    "=",
-                                                    "VariableChildCount(__NetSync.Games) - 1"
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "NetSync::LogMessage"
-                                                  },
-                                                  "parameters": [
-                                                    "",
-                                                    "\"Adding game with id \" + VariableString(__NetSync.GamePlayer.GameId) + \" to games list.\"",
-                                                    "",
-                                                    ""
-                                                  ]
-                                                },
-                                                {
-                                                  "type": {
-                                                    "value": "VariableRemoveChild"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync",
-                                                    "\"Game\""
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Standard",
-                                              "conditions": [],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "VariableRemoveChild"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync",
-                                                    "\"GameFound\""
-                                                  ]
-                                                }
-                                              ]
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Comment",
-                                              "color": {
-                                                "b": 109,
-                                                "g": 230,
-                                                "r": 255,
-                                                "textB": 0,
-                                                "textG": 0,
-                                                "textR": 0
-                                              },
-                                              "comment": "Add each game player to an array under the game",
-                                              "comment2": ""
-                                            },
-                                            {
-                                              "type": "BuiltinCommonInstructions::Standard",
-                                              "conditions": [],
-                                              "actions": [
-                                                {
-                                                  "type": {
-                                                    "value": "SceneVariablePush"
-                                                  },
-                                                  "parameters": [
-                                                    "__NetSync.Games[Variable(__NetSync.GameIndex)].Players",
-                                                    "__NetSync.GamePlayer"
-                                                  ]
-                                                }
-                                              ]
-                                            }
-                                          ],
-                                          "parameters": []
-                                        }
-                                      ]
+                                      "actions": []
                                     },
                                     {
+                                      "disabled": true,
                                       "type": "BuiltinCommonInstructions::Standard",
                                       "conditions": [
                                         {
@@ -19355,17 +19740,6 @@
                                 "__NetSync.GamePlayer.GameOver",
                                 "=",
                                 "0"
-                              ]
-                            },
-                            {
-                              "type": {
-                                "value": "NetSync::LogMessage"
-                              },
-                              "parameters": [
-                                "",
-                                "\"Creating new game player \" + GlobalVariableString(__NetSync.GamePlayer.Id) + \".\"",
-                                "",
-                                ""
                               ]
                             },
                             {
@@ -20923,6 +21297,7 @@
                               "comment2": ""
                             },
                             {
+                              "disabled": true,
                               "type": "BuiltinCommonInstructions::Standard",
                               "conditions": [
                                 {
@@ -20993,14 +21368,63 @@
                                     ""
                                   ]
                                 }
+                              ]
+                            },
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [
+                                {
+                                  "type": {
+                                    "value": "BuiltinCommonInstructions::Once"
+                                  },
+                                  "parameters": []
+                                }
+                              ],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "value": "NetSync::SetProgressMessage"
+                                  },
+                                  "parameters": [
+                                    "",
+                                    "\"Watching games.\"",
+                                    ""
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ModVarSceneTxt"
+                                  },
+                                  "parameters": [
+                                    "__NetSync.FirebaseResults.WatchedGameResult",
+                                    "=",
+                                    "\"\""
+                                  ]
+                                }
                               ],
                               "events": [
                                 {
                                   "type": "BuiltinCommonInstructions::JsCode",
-                                  "inlineCode": "const gameId = null;\nfirebase.firestore()\n    .collection(\"NetSync_Heartbeats\")\n    .doc(gameId)\n    .onSnapshot(\n        (snapshot) => {\n        },\n        (error) => {\n        }\n    );",
+                                  "inlineCode": "const gameId = runtimeScene.getGame().getVariables().get(\"__NetSync\")\n    .getChild(\"GameId\").getAsString();\nconst currentGame = runtimeScene.getGame().getVariables().get(\"__NetSync\")\n    .getChild(\"CurrentGame\");\nconst watchedGameResult = runtimeScene.getVariables().get(\"__NetSync\")\n    .getChild(\"FirebaseResults\").getChild(\"WatchedGameResult\");\n\nfirebase.firestore()\n    .collection(\"NetSync_Games\")\n    .doc(gameId)\n    .onSnapshot((doc) => {\n        if (typeof watchedGameResult !== 'undefined')\n            watchedGameResult.setString('ok');\n\n        if (currentGame)\n            currentGame.fromJSObject(doc.data());\n    },\n    (error) => {\n        if (typeof watchedGameResult !== 'undefined')\n            watchedGameResult.setString(error.message);\n    });",
                                   "parameterObjects": "",
                                   "useStrict": true,
-                                  "eventsSheetExpanded": false
+                                  "eventsSheetExpanded": true
+                                },
+                                {
+                                  "type": "BuiltinCommonInstructions::Standard",
+                                  "conditions": [],
+                                  "actions": [
+                                    {
+                                      "type": {
+                                        "value": "NetSync::SetStatus"
+                                      },
+                                      "parameters": [
+                                        "",
+                                        "\"GameWatched\"",
+                                        ""
+                                      ]
+                                    }
+                                  ]
                                 }
                               ]
                             }
@@ -21846,17 +22270,113 @@
           "sentence": "Sync non-player objects _PARAM1_",
           "events": [
             {
-              "type": "BuiltinCommonInstructions::Comment",
-              "color": {
-                "b": 109,
-                "g": 230,
-                "r": 255,
-                "textB": 0,
-                "textG": 0,
-                "textR": 0
-              },
-              "comment": "Assign the first player in the list of game players to every object\n- This ensures that only one player is syncing outgoing, while all other players are syncing incoming",
-              "comment2": ""
+              "colorB": 228,
+              "colorG": 176,
+              "colorR": 74,
+              "creationTime": 0,
+              "name": "Sync non-player objects",
+              "source": "",
+              "type": "BuiltinCommonInstructions::Group",
+              "events": [
+                {
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "NetSync::HasStatus"
+                      },
+                      "parameters": [
+                        "",
+                        "\"GameAssigned\"",
+                        ""
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "NetSync::HasStatus"
+                      },
+                      "parameters": [
+                        "",
+                        "\"PlayersUpdated\"",
+                        ""
+                      ]
+                    },
+                    {
+                      "type": {
+                        "inverted": true,
+                        "value": "NetSync::HasStatus"
+                      },
+                      "parameters": [
+                        "",
+                        "\"Error\"",
+                        ""
+                      ]
+                    },
+                    {
+                      "type": {
+                        "inverted": true,
+                        "value": "NetSync::HasStatus"
+                      },
+                      "parameters": [
+                        "",
+                        "\"RemovedFromGame\"",
+                        ""
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "Firebase::IsSignedIn"
+                      },
+                      "parameters": []
+                    }
+                  ],
+                  "actions": [],
+                  "events": [
+                    {
+                      "type": "BuiltinCommonInstructions::Comment",
+                      "color": {
+                        "b": 109,
+                        "g": 230,
+                        "r": 255,
+                        "textB": 0,
+                        "textG": 0,
+                        "textR": 0
+                      },
+                      "comment": "Assign the first player in the list of game players to every object\n- This ensures that only one player is syncing outgoing, while all other players are syncing incoming",
+                      "comment2": ""
+                    },
+                    {
+                      "type": "BuiltinCommonInstructions::ForEach",
+                      "object": "Objects",
+                      "conditions": [
+                        {
+                          "type": {
+                            "value": "BuiltinCommonInstructions::CompareNumbers"
+                          },
+                          "parameters": [
+                            "GlobalVariableChildCount(__NetSync.GamePlayers)",
+                            ">",
+                            "0"
+                          ]
+                        }
+                      ],
+                      "actions": [
+                        {
+                          "type": {
+                            "value": "JSONToObjectVariableStructure"
+                          },
+                          "parameters": [
+                            "GlobalVarToJSON(__NetSync.GamePlayers[0])",
+                            "Objects",
+                            "__NetSync.Player"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "parameters": []
             }
           ],
           "parameters": [
@@ -21881,6 +22401,54 @@
               "type": "behavior"
             }
           ],
+          "objectGroups": []
+        },
+        {
+          "description": "Check if the user is the game manager",
+          "fullName": "Is a game manager",
+          "functionType": "Condition",
+          "group": "Syncing",
+          "name": "IsGameManager",
+          "private": false,
+          "sentence": "The current user is the game manager",
+          "events": [
+            {
+              "type": "BuiltinCommonInstructions::Standard",
+              "conditions": [
+                {
+                  "type": {
+                    "value": "BuiltinCommonInstructions::CompareNumbers"
+                  },
+                  "parameters": [
+                    "GlobalVariableChildCount(__NetSync.GamePlayers)",
+                    ">",
+                    "0"
+                  ]
+                },
+                {
+                  "type": {
+                    "value": "BuiltinCommonInstructions::CompareStrings"
+                  },
+                  "parameters": [
+                    "GlobalVariableString(__NetSync.GamePlayers[0].Id)",
+                    "=",
+                    "Firebase::GetUserUID()"
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": {
+                    "value": "SetReturnBoolean"
+                  },
+                  "parameters": [
+                    "True"
+                  ]
+                }
+              ]
+            }
+          ],
+          "parameters": [],
           "objectGroups": []
         },
         {
@@ -21940,7 +22508,7 @@
           "events": [
             {
               "type": "BuiltinCommonInstructions::JsCode",
-              "inlineCode": "const scope = eventsFunctionContext.getArgument(\"Scope\");\nconst globalNetSync = runtimeScene.getGame().getVariables().get(\"__NetSync\");\nconst propertyName = eventsFunctionContext.getArgument(\"FieldName\");\n\nif (scope == \"Player\") {    \n    const currentPlayer = globalNetSync.getChild(\"CurrentPlayer\");\n    eventsFunctionContext.returnValue = currentPlayer.getChild(propertyName).getAsString();\n}\nelse if (scope == \"GamePlayer\") {\n    const gamePlayer = globalNetSync.getChild(\"GamePlayer\");\n    eventsFunctionContext.returnValue = gamePlayer.getChild(propertyName).getAsString();\n}\nelse if (scope == \"Game\") {\n    const currentGame = globalNetSync.getChild(\"CurrentGame\");\n    eventsFunctionContext.returnValue = currentGame.getChild(propertyName).getAsString();\n}",
+              "inlineCode": "const scope = eventsFunctionContext.getArgument(\"Scope\");\nconst globalNetSync = runtimeScene.getGame().getVariables().get(\"__NetSync\");\nconst propertyName = eventsFunctionContext.getArgument(\"FieldName\");\n\nif (scope == \"Player\") {    \n    const currentPlayer = globalNetSync.getChild(\"CurrentPlayer\");\n    eventsFunctionContext.returnValue = currentPlayer.hasChild(propertyName) ?\n        currentPlayer.getChild(propertyName).getAsString() : \"\";\n}\nelse if (scope == \"GamePlayer\") {\n    const gamePlayer = globalNetSync.getChild(\"GamePlayer\");\n    eventsFunctionContext.returnValue = gamePlayer.hasChild(propertyName) ?\n        gamePlayer.getChild(propertyName).getAsString() : \"\";\n}\nelse if (scope == \"Game\") {\n    const currentGame = globalNetSync.getChild(\"CurrentGame\");\n    eventsFunctionContext.returnValue = currentGame.hasChild(propertyName) ?\n        currentGame.getChild(propertyName).getAsString() : \"\";\n}",
               "parameterObjects": "",
               "useStrict": true,
               "eventsSheetExpanded": true
@@ -22501,7 +23069,7 @@
           "group": "Game over",
           "name": "CheckConnection",
           "private": false,
-          "sentence": "Send disconnect message when user is disconnected",
+          "sentence": "Send player connection status and (optionally _PARAM1_) remove disconnected players",
           "events": [
             {
               "type": "BuiltinCommonInstructions::Standard",
@@ -22550,360 +23118,80 @@
                   "events": [
                     {
                       "type": "BuiltinCommonInstructions::JsCode",
-                      "inlineCode": "if (gdjs.evtTools.netsync.userConnectionRef != null) {\n    gdjs.evtTools.netsync.userConnectionRef.set(\"exited\");\n    gdjs.evtTools.netsync.userConnectionRef = null;\n}\n\nif (gdjs.evtTools.netsync.disconnectedRef != null) {\n    gdjs.evtTools.netsync.disconnectedRef.cancel;\n    gdjs.evtTools.netsync.disconnectedRef = null;\n}\n\nif (gdjs.evtTools.netsync.connectedRef != null) {\n    gdjs.evtTools.netsync.connectedRef.off(\"value\");\n    gdjs.evtTools.netsync.connectedRef = null;\n}\n\nif (gdjs.evtTools.netsync.playerConnectionRefs != null) {\n    for (let playerConnectionRef in playerConnectionRefs) {\n        playerConnectionRef.off(\"value\")\n    }\n}\ngdjs.evtTools.netsync.playerConnectionRefs = [];\n\nconst userId = firebase.auth().currentUser.uid;\nconst gameId = runtimeScene.getGame().getVariables().get(\"__NetSync\").getChild(\"GameId\").getAsString();\n\nconst userConnectionRef = firebase.database().ref(\"netsync/connection/\" + gameId + \"/\" + userId);\n\nconst connectedRef = firebase.database().ref(\".info/connected\");\nconnectedRef.on(\"value\", (snapshot) => {\n    if (snapshot.val() === true) {\n        userConnectionRef.set(\"connected\");\n        const disconnectedRef = userConnectionRef.onDisconnect();\n        disconnectedRef.set(\"disconnected\");\n        gdjs.evtTools.netsync.disconnectedRef = disconnectedRef;\n    }\n});\ngdjs.evtTools.netsync.connectedRef = connectedRef;\ngdjs.evtTools.netsync.userConnectionRef = userConnectionRef;",
+                      "inlineCode": "if (gdjs.evtTools.netsync.userConnectionRef != null) {\n    gdjs.evtTools.netsync.userConnectionRef.set(\"exited\");\n    gdjs.evtTools.netsync.userConnectionRef = null;\n}\n\nif (gdjs.evtTools.netsync.disconnectedRef != null) {\n    gdjs.evtTools.netsync.disconnectedRef.cancel;\n    gdjs.evtTools.netsync.disconnectedRef = null;\n}\n\nif (gdjs.evtTools.netsync.connectedRef != null) {\n    gdjs.evtTools.netsync.connectedRef.off(\"value\");\n    gdjs.evtTools.netsync.connectedRef = null;\n}\n\nif (gdjs.evtTools.netsync.playerConnectionRefs.length > 0) {\n    for (let playerConnectionRef of gdjs.evtTools.netsync.playerConnectionRefs) {\n        playerConnectionRef.off(\"value\");\n    }\n    gdjs.evtTools.netsync.playerConnectionRefs = [];\n}\n\nconst userId = firebase.auth().currentUser.uid;\nconst gameId = runtimeScene.getGame().getVariables().get(\"__NetSync\").getChild(\"GameId\").getAsString();\n\nconst userConnectionRef = firebase.database().ref(\"netsync/connection/\" + gameId + \"/\" + userId);\n\nconst connectedRef = firebase.database().ref(\".info/connected\");\nconnectedRef.on(\"value\", (snapshot) => {\n    if (snapshot.val() === true) {\n        userConnectionRef.set(\"connected\");\n        const disconnectedRef = userConnectionRef.onDisconnect();\n        disconnectedRef.set(\"disconnected\");\n        gdjs.evtTools.netsync.disconnectedRef = disconnectedRef;\n    }\n});\ngdjs.evtTools.netsync.connectedRef = connectedRef;\ngdjs.evtTools.netsync.userConnectionRef = userConnectionRef;",
                       "parameterObjects": "",
                       "useStrict": true,
                       "eventsSheetExpanded": true
                     },
                     {
-                      "infiniteLoopWarning": true,
-                      "type": "BuiltinCommonInstructions::While",
-                      "whileConditions": [
-                        {
-                          "type": {
-                            "value": "BuiltinCommonInstructions::CompareNumbers"
-                          },
-                          "parameters": [
-                            "Variable(__NetSync.GamePlayersIndex)",
-                            "<",
-                            "GlobalVariableChildCount(__NetSync.GamePlayers)"
-                          ]
-                        }
-                      ],
-                      "conditions": [],
-                      "actions": [],
-                      "events": [
-                        {
-                          "type": "BuiltinCommonInstructions::Standard",
-                          "conditions": [
-                            {
-                              "type": {
-                                "value": "BuiltinCommonInstructions::CompareStrings"
-                              },
-                              "parameters": [
-                                "GlobalVariableString(__NetSync.GamePlayers[Variable(__NetSync.GamePlayersIndex)].Id)",
-                                "!=",
-                                "Firebase::GetUserUID()"
-                              ]
-                            }
-                          ],
-                          "actions": [],
-                          "events": [
-                            {
-                              "type": "BuiltinCommonInstructions::JsCode",
-                              "inlineCode": "const netSync = runtimeScene.getGame().getVariables().get(\"__NetSync\");\nconst playerId = netSync.getChild(\"GamePlayers\").getChildAt(\n    netSync.getChild(\"GamePlayersIndex\").getAsNumber())\n        .getChild(\"Id\").getAsString();\nconst gameId = netSync.getChild(\"GameId\").getAsString();\n\nconst playerConnectionRef = firebase.database().ref(\"netsync/connection/\" + gameId + \"/\" + playerId);\nplayerConnectionRef.on('value', (snapshot) => {\n    const connectionState = snapshot.val();\n    if (netSync.getChild(\"IsDebugEnabled\").getAsBoolean()) {\n        console.log(\"Connection state for player \" + playerId + \" in game \" + gameId + \" is \" + connectionState + \".\")\n    }\n    if ((connectionState == \"disconnected\") || (connectionState == \"exited\")) {\n        const removePlayers = runtimeScene.getVariables().get(\"__NetSync\").getChild(\"RemovePlayers\");\n        let playerFound = false;\n        for (let removePlayer in removePlayers.getAllChildrenArray()) {\n            if ((removePlayer.getChild(\"PlayerId\").getAsString() == playerId) &&\n                (removePlayer.getChild(\"GameId\").getAsString() == gameId)) {\n                playerFound = true;\n                break;\n            }\n        }\n        if (!playerFound) {\n            const removePlayer = runtimeScene.getVariables().get(\"__NetSync\").getChild(\"RemovePlayer\");\n            removePlayer.addChild(\"PlayerId\", playerId);\n            removePlayer.addChild(\"GameId\", gameId);\n            removePlayers.pushVariableCopy(removePlayer);\n            runtimeScene.getVariables().get(\"__NetSync\").removeChild(\"RemovePlayer\");\n        }\n    }\n});\n\ngdjs.evtTools.netsync.playerConnectionRefs.push(playerConnectionRef);",
-                              "parameterObjects": "",
-                              "useStrict": true,
-                              "eventsSheetExpanded": true
-                            }
-                          ]
-                        },
-                        {
-                          "type": "BuiltinCommonInstructions::Standard",
-                          "conditions": [],
-                          "actions": [
-                            {
-                              "type": {
-                                "value": "ModVarScene"
-                              },
-                              "parameters": [
-                                "__NetSync.GamePlayersIndex",
-                                "+",
-                                "1"
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [],
-                      "actions": [
-                        {
-                          "type": {
-                            "value": "VariableRemoveChild"
-                          },
-                          "parameters": [
-                            "__NetSync",
-                            "\"GamePlayersIndex\""
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "parameters": [],
-          "objectGroups": []
-        },
-        {
-          "description": "Check the heartbeat for all non-current players and remove players with no heartbeat.",
-          "fullName": "Check players' heartbeats",
-          "functionType": "Action",
-          "group": "Game over",
-          "name": "RemoveDisconnected",
-          "private": false,
-          "sentence": "Remove players with no heartbeat after _PARAM1_ seconds",
-          "events": [
-            {
-              "type": "BuiltinCommonInstructions::Standard",
-              "conditions": [
-                {
-                  "type": {
-                    "value": "NetSync::HasStatus"
-                  },
-                  "parameters": [
-                    "",
-                    "\"GameAssigned\"",
-                    ""
-                  ]
-                },
-                {
-                  "type": {
-                    "value": "Firebase::IsSignedIn"
-                  },
-                  "parameters": []
-                },
-                {
-                  "type": {
-                    "inverted": true,
-                    "value": "NetSync::HasStatus"
-                  },
-                  "parameters": [
-                    "",
-                    "\"Error\"",
-                    ""
-                  ]
-                }
-              ],
-              "actions": [],
-              "events": [
-                {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "value": "BuiltinCommonInstructions::Once"
-                      },
-                      "parameters": []
-                    }
-                  ],
-                  "actions": [],
-                  "events": [
-                    {
-                      "type": "BuiltinCommonInstructions::JsCode",
-                      "inlineCode": "const gameId = null;\nfirebase.firestore()\n    .collection(\"NetSync_Heartbeats\")\n    .doc(gameId)\n    .onSnapshot(\n        (snapshot) => {\n        },\n        (error) => {\n        }\n    );",
-                      "parameterObjects": "",
-                      "useStrict": true,
-                      "eventsSheetExpanded": false
-                    },
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [],
-                      "actions": []
-                    }
-                  ]
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Comment",
-                  "color": {
-                    "b": 109,
-                    "g": 230,
-                    "r": 255,
-                    "textB": 0,
-                    "textG": 0,
-                    "textR": 0
-                  },
-                  "comment": "Watch a query on heartbeat documents in the current game excluding the current user",
-                  "comment2": ""
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "value": "BuiltinCommonInstructions::Once"
-                      },
-                      "parameters": []
-                    }
-                  ],
-                  "actions": [
-                    {
-                      "type": {
-                        "value": "Firebase::FirestoreStartQuery"
-                      },
-                      "parameters": [
-                        "\"__NetSync_HeartbeatQuery\"",
-                        "\"NetSync_Heartbeat\""
-                      ]
-                    },
-                    {
-                      "type": {
-                        "value": "Firebase::FirestoreQueryWhereText"
-                      },
-                      "parameters": [
-                        "\"__NetSync_HeartbeatQuery\"",
-                        "\"GameId\"",
-                        "\"==\"",
-                        "NetSync::GameId()"
-                      ]
-                    },
-                    {
-                      "type": {
-                        "value": "Firebase::FirestoreQueryWhereText"
-                      },
-                      "parameters": [
-                        "\"__NetSync_HeartbeatQuery\"",
-                        "\"Id\"",
-                        "\"!=\"",
-                        "Firebase::GetUserUID()"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Comment",
-                  "color": {
-                    "b": 109,
-                    "g": 230,
-                    "r": 255,
-                    "textB": 0,
-                    "textG": 0,
-                    "textR": 0
-                  },
-                  "comment": "Whenever the heartbeat documents change:\n- Loop through the query documents\n  - Get the heartbeat record\n  - See if that player is in the game\n  - If so, add them to the heartbeat list",
-                  "comment2": ""
-                },
-                {
-                  "folded": true,
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [
-                    {
-                      "type": {
-                        "value": "VarSceneTxt"
-                      },
-                      "parameters": [
-                        "__NetSync.FirebaseResults.QueryWatchedPlayersResult",
-                        "=",
-                        "\"ok\""
-                      ]
-                    }
-                  ],
-                  "actions": [
-                    {
-                      "type": {
-                        "value": "NetSync::LogMessage"
-                      },
-                      "parameters": [
-                        "",
-                        "\"Game players list updated.\"",
-                        "",
-                        ""
-                      ]
-                    },
-                    {
-                      "type": {
-                        "value": "GlobalVariableClearChildren"
-                      },
-                      "parameters": [
-                        "__NetSync.GamePlayers"
-                      ]
-                    }
-                  ],
-                  "events": [
-                    {
                       "type": "BuiltinCommonInstructions::Standard",
                       "conditions": [
                         {
                           "type": {
-                            "value": "VarSceneTxt"
+                            "value": "GetArgumentAsBoolean"
                           },
                           "parameters": [
-                            "__NetSync.WatchedPlayersResults.empty",
-                            "=",
-                            "\"false\""
+                            "\"RemovePlayers\""
                           ]
                         }
                       ],
                       "actions": [],
                       "events": [
                         {
-                          "type": "BuiltinCommonInstructions::ForEachChildVariable",
-                          "iterableVariableName": "__NetSync.WatchedPlayersResults.docs",
-                          "valueIteratorVariableName": "__NetSync.QueryDoc",
-                          "keyIteratorVariableName": "",
-                          "conditions": [
+                          "infiniteLoopWarning": true,
+                          "type": "BuiltinCommonInstructions::While",
+                          "whileConditions": [
                             {
                               "type": {
-                                "value": "VarSceneTxt"
+                                "value": "BuiltinCommonInstructions::CompareNumbers"
                               },
                               "parameters": [
-                                "__NetSync.QueryDoc.exists",
-                                "=",
-                                "\"true\""
+                                "Variable(__NetSync.GamePlayersIndex)",
+                                "<",
+                                "GlobalVariableChildCount(__NetSync.GamePlayers)"
                               ]
                             }
                           ],
+                          "conditions": [],
                           "actions": [],
                           "events": [
                             {
-                              "type": "BuiltinCommonInstructions::ForEachChildVariable",
-                              "iterableVariableName": "__NetSync.QueryDoc",
-                              "valueIteratorVariableName": "__NetSync.GamePlayer",
-                              "keyIteratorVariableName": "__NetSync.FieldName",
+                              "type": "BuiltinCommonInstructions::Standard",
                               "conditions": [
                                 {
                                   "type": {
-                                    "value": "VarSceneTxt"
+                                    "value": "BuiltinCommonInstructions::CompareStrings"
                                   },
                                   "parameters": [
-                                    "__NetSync.FieldName",
-                                    "=",
-                                    "\"data\""
+                                    "GlobalVariableString(__NetSync.GamePlayers[Variable(__NetSync.GamePlayersIndex)].Id)",
+                                    "!=",
+                                    "Firebase::GetUserUID()"
                                   ]
                                 }
                               ],
+                              "actions": [],
+                              "events": [
+                                {
+                                  "type": "BuiltinCommonInstructions::JsCode",
+                                  "inlineCode": "const netSync = runtimeScene.getGame().getVariables().get(\"__NetSync\");\nconst playerId = netSync.getChild(\"GamePlayers\").getChildAt(\n    netSync.getChild(\"GamePlayersIndex\").getAsNumber())\n        .getChild(\"Id\").getAsString();\nconst gameId = netSync.getChild(\"GameId\").getAsString();\n\nconst playerConnectionRef = firebase.database().ref(\"netsync/connection/\" + gameId + \"/\" + playerId);\nplayerConnectionRef.on('value', (snapshot) => {\n    const connectionState = snapshot.val();\n    const sceneNetSync = runtimeScene.getVariables().get(\"__NetSync\");\n    if (netSync.getChild(\"IsDebugEnabled\").getAsBoolean()) {\n        console.log(\"Connection state for player \" + playerId + \" in game \" + gameId + \" is \" + connectionState + \".\")\n    }\n    if ((connectionState == \"disconnected\") || (connectionState == \"exited\")) {\n        const removePlayers = sceneNetSync.getChild(\"RemovePlayers\");\n        let playerFound = false;\n        for (let removePlayer of removePlayers.getAllChildrenArray()) {\n            if ((removePlayer.getChild(\"PlayerId\").getAsString() == playerId) &&\n                (removePlayer.getChild(\"GameId\").getAsString() == gameId)) {\n                playerFound = true;\n                break;\n            }\n        }\n        if (!playerFound) {\n            const removePlayer = sceneNetSync.getChild(\"RemovePlayer\");\n            removePlayer.addChild(\"PlayerId\", playerId);\n            removePlayer.addChild(\"GameId\", gameId);\n            removePlayers.pushVariableCopy(removePlayer);\n            sceneNetSync.removeChild(\"RemovePlayer\");\n        }\n    }\n});\n\ngdjs.evtTools.netsync.playerConnectionRefs.push(playerConnectionRef);",
+                                  "parameterObjects": "",
+                                  "useStrict": true,
+                                  "eventsSheetExpanded": true
+                                }
+                              ]
+                            },
+                            {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [],
                               "actions": [
                                 {
                                   "type": {
-                                    "value": "NetSync::LogMessage"
+                                    "value": "ModVarScene"
                                   },
                                   "parameters": [
-                                    "",
-                                    "\"Watched player found with id \" + VariableString(__NetSync.GamePlayer.Id) + \" in game \" + VariableString(__NetSync.GamePlayer.GameId) + \".\"",
-                                    "",
-                                    ""
-                                  ]
-                                }
-                              ],
-                              "events": [
-                                {
-                                  "type": "BuiltinCommonInstructions::Standard",
-                                  "conditions": [
-                                    {
-                                      "type": {
-                                        "value": "BuiltinCommonInstructions::CompareStrings"
-                                      },
-                                      "parameters": [
-                                        "VariableString(__NetSync.GamePlayer.GameId)",
-                                        "=",
-                                        "NetSync::GameId()"
-                                      ]
-                                    }
-                                  ],
-                                  "actions": [
-                                    {
-                                      "type": {
-                                        "value": "GlobalVariablePush"
-                                      },
-                                      "parameters": [
-                                        "__NetSync.GamePlayers",
-                                        "__NetSync.GamePlayer"
-                                      ]
-                                    }
+                                    "__NetSync.GamePlayersIndex",
+                                    "+",
+                                    "1"
                                   ]
                                 }
                               ]
@@ -22920,125 +23208,14 @@
                               },
                               "parameters": [
                                 "__NetSync",
-                                "\"QueryDoc\""
-                              ]
-                            },
-                            {
-                              "type": {
-                                "value": "VariableRemoveChild"
-                              },
-                              "parameters": [
-                                "__NetSync",
-                                "\"GamePlayer\""
-                              ]
-                            },
-                            {
-                              "type": {
-                                "value": "VariableRemoveChild"
-                              },
-                              "parameters": [
-                                "__NetSync",
-                                "\"FieldName\""
+                                "\"GamePlayersIndex\""
                               ]
                             }
                           ]
                         }
                       ]
-                    },
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [
-                        {
-                          "type": {
-                            "value": "VarSceneTxt"
-                          },
-                          "parameters": [
-                            "__NetSync.WatchedPlayersResults.empty",
-                            "=",
-                            "\"true\""
-                          ]
-                        }
-                      ],
-                      "actions": [
-                        {
-                          "type": {
-                            "value": "NetSync::LogMessage"
-                          },
-                          "parameters": [
-                            "",
-                            "\"Game has no players; game over.\"",
-                            "",
-                            ""
-                          ]
-                        },
-                        {
-                          "type": {
-                            "value": "NetSync::EndGame"
-                          },
-                          "parameters": [
-                            "",
-                            ""
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "BuiltinCommonInstructions::Comment",
-                      "color": {
-                        "b": 109,
-                        "g": 230,
-                        "r": 255,
-                        "textB": 0,
-                        "textG": 0,
-                        "textR": 0
-                      },
-                      "comment": "Reset the watched players list so that this code is retriggered when the players list is updated again",
-                      "comment2": ""
-                    },
-                    {
-                      "type": "BuiltinCommonInstructions::Standard",
-                      "conditions": [],
-                      "actions": [
-                        {
-                          "type": {
-                            "value": "VariableRemoveChild"
-                          },
-                          "parameters": [
-                            "__NetSync",
-                            "\"WatchedPlayersResults\""
-                          ]
-                        },
-                        {
-                          "type": {
-                            "value": "ModVarSceneTxt"
-                          },
-                          "parameters": [
-                            "__NetSync.FirebaseResults.QueryWatchedPlayersResult",
-                            "=",
-                            "\"\""
-                          ]
-                        }
-                      ]
                     }
                   ]
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Comment",
-                  "color": {
-                    "b": 109,
-                    "g": 230,
-                    "r": 255,
-                    "textB": 0,
-                    "textG": 0,
-                    "textR": 0
-                  },
-                  "comment": "- Loop through the players\n  - For each, find the corresponding heartbeat\n  - If there is no heartbeat, then add one with the current time\n  - If there is a heartbeat, then check if it is within the number of seconds\n  - If it is not within that number of seconds\n    - Remove that player from the game\n    - Delete the heartbeat record",
-                  "comment2": ""
-                },
-                {
-                  "type": "BuiltinCommonInstructions::Standard",
-                  "conditions": [],
-                  "actions": []
                 }
               ]
             }
@@ -23046,13 +23223,13 @@
           "parameters": [
             {
               "codeOnly": false,
-              "defaultValue": "",
-              "description": "Seconds to allow since last heartbeat",
-              "longDescription": "",
-              "name": "Seconds",
-              "optional": false,
+              "defaultValue": "yes",
+              "description": "Whether to remove players which have disconnected",
+              "longDescription": "If you are using a server-side player removal mechanism, then you might want to send connection state within removing disconnected players (set this to No).",
+              "name": "RemovePlayers",
+              "optional": true,
               "supplementaryInformation": "",
-              "type": "expression"
+              "type": "yesorno"
             }
           ],
           "objectGroups": []
@@ -23198,13 +23375,13 @@
           "objectGroups": []
         },
         {
-          "description": "Assign a game by an ID or a new game.",
+          "description": "Assign a game by an identifier or a new game.",
           "fullName": "Assign game by ID",
           "functionType": "Action",
           "group": "Advanced",
           "name": "_AssignById",
           "private": true,
-          "sentence": "Assign the game with ID _PARAM1_",
+          "sentence": "Assign the game with identifier _PARAM1_",
           "events": [],
           "parameters": [
             {
@@ -23712,17 +23889,6 @@
                       "actions": [
                         {
                           "type": {
-                            "value": "NetSync::LogMessage"
-                          },
-                          "parameters": [
-                            "",
-                            "\"Game players list updated.\"",
-                            "",
-                            ""
-                          ]
-                        },
-                        {
-                          "type": {
                             "value": "GlobalVariableClearChildren"
                           },
                           "parameters": [
@@ -23994,7 +24160,7 @@
                           "parameters": [
                             "",
                             "\"Firebase player watch error: \" + VariableString(__NetSync.FirebaseResults.QueryWatchedPlayersResult)",
-                            "",
+                            "yes",
                             ""
                           ]
                         },
@@ -24058,27 +24224,54 @@
                                 "value": "VarSceneTxt"
                               },
                               "parameters": [
-                                "__NetSync.FirebaseResults.QueryWatchedGameResult",
+                                "__NetSync.FirebaseResults.WatchedGameResult",
                                 "=",
                                 "\"ok\""
                               ]
                             }
                           ],
-                          "actions": [
-                            {
-                              "type": {
-                                "value": "NetSync::LogMessage"
-                              },
-                              "parameters": [
-                                "",
-                                "\"Game updated.\"",
-                                "",
-                                ""
-                              ]
-                            }
-                          ],
+                          "actions": [],
                           "events": [
                             {
+                              "type": "BuiltinCommonInstructions::Standard",
+                              "conditions": [],
+                              "actions": [
+                                {
+                                  "type": {
+                                    "value": "NetSync::LogMessage"
+                                  },
+                                  "parameters": [
+                                    "",
+                                    "\"Current game updated \" + GlobalVariableString(__NetSync.CurrentGame.Id) + \".\"",
+                                    "",
+                                    ""
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "NetSync::SetStatus"
+                                  },
+                                  "parameters": [
+                                    "",
+                                    "\"GameUpdated\"",
+                                    ""
+                                  ]
+                                },
+                                {
+                                  "type": {
+                                    "value": "ModVarSceneTxt"
+                                  },
+                                  "parameters": [
+                                    "__NetSync.FirebaseResults.WatchedGameResult",
+                                    "=",
+                                    "\"\""
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "disabled": true,
+                              "folded": true,
                               "type": "BuiltinCommonInstructions::Standard",
                               "conditions": [
                                 {
@@ -24223,6 +24416,7 @@
                               ]
                             },
                             {
+                              "disabled": true,
                               "type": "BuiltinCommonInstructions::Standard",
                               "conditions": [
                                 {
@@ -24264,6 +24458,7 @@
                               "comment2": ""
                             },
                             {
+                              "disabled": true,
                               "type": "BuiltinCommonInstructions::Standard",
                               "conditions": [],
                               "actions": [
@@ -24321,7 +24516,7 @@
                                 "value": "VarSceneTxt"
                               },
                               "parameters": [
-                                "__NetSync.FirebaseResults.QueryWatchedGameResult",
+                                "__NetSync.FirebaseResults.WatchedGameResult",
                                 "!=",
                                 "\"ok\""
                               ]
@@ -24331,7 +24526,7 @@
                                 "value": "VarSceneTxt"
                               },
                               "parameters": [
-                                "__NetSync.FirebaseResults.QueryWatchedGameResult",
+                                "__NetSync.FirebaseResults.WatchedGameResult",
                                 "!=",
                                 "\"\""
                               ]
@@ -24344,8 +24539,8 @@
                               },
                               "parameters": [
                                 "",
-                                "\"Firebase game watch error: \" + VariableString(__NetSync.FirebaseResults.QueryWatchedGameResult)",
-                                "",
+                                "\"Firebase game watch error: \" + VariableString(__NetSync.FirebaseResults.WatchedGameResult)",
+                                "yes",
                                 ""
                               ]
                             },
@@ -24354,7 +24549,7 @@
                                 "value": "ModVarSceneTxt"
                               },
                               "parameters": [
-                                "__NetSync.FirebaseResults.QueryWatchedGameResult",
+                                "__NetSync.FirebaseResults.WatchedGameResult",
                                 "=",
                                 "\"\""
                               ]
@@ -24911,6 +25106,13 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "BuiltinCommonInstructions::JsCode",
+              "inlineCode": "// NetSync namespace\ngdjs.evtTools.netsync = {\n    userConnectionRef: null, // Record in realtime database which tracks the user connection status\n    disconnectedRef: null, // Reference to disconnect operation on firebase realtime db server\n    connectedRef: null, // Reference to connect record on on firebase realtime db server\n    playerConnectionRefs: [] // References to user connection records for each non-current player\n};",
+              "parameterObjects": "",
+              "useStrict": true,
+              "eventsSheetExpanded": false
             }
           ],
           "parameters": [],
@@ -25202,7 +25404,7 @@
               "events": [
                 {
                   "type": "BuiltinCommonInstructions::JsCode",
-                  "inlineCode": "const object = objects[0];\nconst objectVariables = object.getVariables();\nconst netSync = objectVariables.get(\"__NetSync\");\nconst variables = netSync.getChild(\"Variables\");\nconst variableName = eventsFunctionContext.getArgument(\"VariableName\");\nconst lastVariableName = \"Last\" + eventsFunctionContext.getArgument(\"VariableName\");\nif (variables.hasChild(lastVariableName)) {\n    const lastVariable = variables.getChild(lastVariableName);\n    const currentVariable = objectVariables.get(variableName);\n    eventsFunctionContext.returnValue = lastVariable.getAsString() != currentVariable.getAsString();\n}\nelse {\n    // If no last variable then trigger a change up front\n    eventsFunctionContext.returnValue = true;\n}",
+                  "inlineCode": "const object = objects[0];\nconst objectVariables = object.getVariables();\nconst netSync = objectVariables.get(\"__NetSync\");\nconst variables = netSync.getChild(\"Variables\");\nconst variableName = eventsFunctionContext.getArgument(\"VariableName\");\nconst lastVariableName = \"Last\" + eventsFunctionContext.getArgument(\"VariableName\");\nif (variables.hasChild(lastVariableName)) {\n    const lastVariable = variables.getChild(lastVariableName);\n    const currentVariable = objectVariables.get(variableName);\n    eventsFunctionContext.returnValue = lastVariable.getAsString() != currentVariable.getAsString();\n}",
                   "parameterObjects": "Object",
                   "useStrict": true,
                   "eventsSheetExpanded": true
@@ -25286,7 +25488,7 @@
               "events": [
                 {
                   "type": "BuiltinCommonInstructions::JsCode",
-                  "inlineCode": "const object = objects[0];\nconst objectVariables = object.getVariables();\nconst netSync = objectVariables.get(\"__NetSync\");\nconst propertyName = eventsFunctionContext.getArgument(\"FieldName\");\nconst player = netSync.getChild(\"Player\");\neventsFunctionContext.returnValue = player.getChild(propertyName).getAsString();",
+                  "inlineCode": "const object = objects[0];\nconst objectVariables = object.getVariables();\nconst netSync = objectVariables.get(\"__NetSync\");\nif (netSync.hasChild(\"Player\")) {\n    const propertyName = eventsFunctionContext.getArgument(\"FieldName\");\n    const player = netSync.getChild(\"Player\");\n    eventsFunctionContext.returnValue = player.hasChild(propertyName) ?\n        player.getChild(propertyName).getAsString() : \"\";\n}\nelse {\n    eventsFunctionContext.returnValue = \"\";\n}",
                   "parameterObjects": "Object",
                   "useStrict": true,
                   "eventsSheetExpanded": false
