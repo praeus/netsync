@@ -1,2 +1,1 @@
-# netsync
-NetSync GDevelop Extension
+# NetSync GDevelop Extension
