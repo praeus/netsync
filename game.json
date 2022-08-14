@@ -8389,7 +8389,7 @@
         "gridColor": 10401023,
         "gridAlpha": 0.8,
         "snap": false,
-        "zoomFactor": 0.41279999999999994,
+        "zoomFactor": 0.8098,
         "windowMask": false
       },
       "objectsGroups": [],
@@ -8549,8 +8549,8 @@
           "name": "Platform",
           "persistentUuid": "ca80554a-e747-4e15-8947-81d81a404788",
           "width": 169,
-          "x": 267,
-          "y": 198,
+          "x": 283,
+          "y": 240,
           "zOrder": 8,
           "numberProperties": [],
           "stringProperties": [],
@@ -8667,6 +8667,22 @@
           "numberProperties": [],
           "stringProperties": [],
           "initialVariables": []
+        },
+        {
+          "angle": 0,
+          "customSize": true,
+          "height": 32,
+          "layer": "",
+          "locked": false,
+          "name": "Platform",
+          "persistentUuid": "6b4bb3b7-85e7-4369-ac2f-e8952221bdd5",
+          "width": 50,
+          "x": 345,
+          "y": 132,
+          "zOrder": 8,
+          "numberProperties": [],
+          "stringProperties": [],
+          "initialVariables": []
         }
       ],
       "objects": [
@@ -8726,6 +8742,7 @@
               "CooldownActive": false
             },
             {
+              "jumpSustainTime": 0.8,
               "name": "PlatformerObject",
               "type": "PlatformBehavior::PlatformerObjectBehavior",
               "acceleration": 1500,
@@ -8736,7 +8753,6 @@
               "gravity": 1000,
               "ignoreDefaultControls": true,
               "jumpSpeed": 600,
-              "jumpSustainTime": 0.2,
               "ladderClimbingSpeed": 150,
               "maxFallingSpeed": 700,
               "maxSpeed": 250,
@@ -8755,7 +8771,7 @@
               "SyncVariables": "IsHit",
               "SyncKeys": "f",
               "SyncPosition": true,
-              "SyncPositionInterval": 0.2,
+              "SyncPositionInterval": 0.1,
               "ListenFor": ""
             },
             {
@@ -10721,16 +10737,6 @@
                 "IsActive",
                 "True"
               ]
-            },
-            {
-              "type": {
-                "value": "NetSync::Syncing::IsCurrentPlayer"
-              },
-              "parameters": [
-                "Imp",
-                "Syncing",
-                ""
-              ]
             }
           ],
           "actions": [],
@@ -10804,143 +10810,161 @@
               "conditions": [
                 {
                   "type": {
-                    "value": "ObjectVariableAsBoolean"
+                    "value": "NetSync::Syncing::IsCurrentPlayer"
                   },
                   "parameters": [
                     "Imp",
-                    "IsMovingLeft",
-                    "True"
-                  ]
-                },
-                {
-                  "type": {
-                    "value": "PosX"
-                  },
-                  "parameters": [
-                    "Imp",
-                    ">",
-                    "EnemySpawnPoint.X() - 100"
+                    "Syncing",
+                    ""
                   ]
                 }
               ],
-              "actions": [
+              "actions": [],
+              "events": [
                 {
-                  "type": {
-                    "value": "PlatformBehavior::SimulateLeftKey"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "PlatformerObject"
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "BuiltinCommonInstructions::Standard",
-              "conditions": [
-                {
-                  "type": {
-                    "value": "ObjectVariableAsBoolean"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "IsMovingLeft",
-                    "True"
-                  ]
-                },
-                {
-                  "type": {
-                    "value": "PosX"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "<=",
-                    "EnemySpawnPoint.X() - 100"
-                  ]
-                }
-              ],
-              "actions": [
-                {
-                  "type": {
-                    "value": "SetObjectVariableAsBoolean"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "IsMovingLeft",
-                    "False"
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "BuiltinCommonInstructions::Standard",
-              "conditions": [
-                {
-                  "type": {
-                    "value": "ObjectVariableAsBoolean"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "IsMovingLeft",
-                    "False"
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "ObjectVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "IsMovingLeft",
+                        "True"
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "PosX"
+                      },
+                      "parameters": [
+                        "Imp",
+                        ">",
+                        "EnemySpawnPoint.X() - 30"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "PlatformBehavior::SimulateLeftKey"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "PlatformerObject"
+                      ]
+                    }
                   ]
                 },
                 {
-                  "type": {
-                    "value": "PosX"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "<",
-                    "EnemySpawnPoint.X() + 100"
-                  ]
-                }
-              ],
-              "actions": [
-                {
-                  "type": {
-                    "value": "PlatformBehavior::SimulateRightKey"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "PlatformerObject"
-                  ]
-                }
-              ]
-            },
-            {
-              "type": "BuiltinCommonInstructions::Standard",
-              "conditions": [
-                {
-                  "type": {
-                    "value": "ObjectVariableAsBoolean"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "IsMovingLeft",
-                    "True"
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "ObjectVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "IsMovingLeft",
+                        "True"
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "PosX"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "<=",
+                        "EnemySpawnPoint.X() - 30"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "SetObjectVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "IsMovingLeft",
+                        "False"
+                      ]
+                    }
                   ]
                 },
                 {
-                  "type": {
-                    "value": "PosX"
-                  },
-                  "parameters": [
-                    "Imp",
-                    ">=",
-                    "EnemySpawnPoint.X() + 100"
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "ObjectVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "IsMovingLeft",
+                        "False"
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "PosX"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "<",
+                        "EnemySpawnPoint.X() + 30"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "PlatformBehavior::SimulateRightKey"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "PlatformerObject"
+                      ]
+                    }
                   ]
-                }
-              ],
-              "actions": [
+                },
                 {
-                  "type": {
-                    "value": "SetObjectVariableAsBoolean"
-                  },
-                  "parameters": [
-                    "Imp",
-                    "IsMovingLeft",
-                    "True"
+                  "type": "BuiltinCommonInstructions::Standard",
+                  "conditions": [
+                    {
+                      "type": {
+                        "value": "ObjectVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "IsMovingLeft",
+                        "False"
+                      ]
+                    },
+                    {
+                      "type": {
+                        "value": "PosX"
+                      },
+                      "parameters": [
+                        "Imp",
+                        ">=",
+                        "EnemySpawnPoint.X() + 30"
+                      ]
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": {
+                        "value": "SetObjectVariableAsBoolean"
+                      },
+                      "parameters": [
+                        "Imp",
+                        "IsMovingLeft",
+                        "True"
+                      ]
+                    }
                   ]
                 }
               ]
@@ -32686,7 +32710,7 @@
               "codeOnly": false,
               "defaultValue": "yes",
               "description": "Whether to remove players which have disconnected",
-              "longDescription": "If you are using a server-side player removal mechanism, then you might want to send connection state within removing disconnected players (set this to No).",
+              "longDescription": "If you are using a server-side player removal mechanism, then you might want to send connection state without removing disconnected players by setting this to No.",
               "name": "RemovePlayers",
               "optional": true,
               "supplementaryInformation": "",
